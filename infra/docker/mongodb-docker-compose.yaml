@@ -1,0 +1,25 @@
+version: '3'
+services:
+  note_mongodb:
+    image: mongo:6.0.5-jammy
+    command: ["--auth"]
+    container_name: note-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_DATABASE}
+    ports:
+      - '27017:27017'
+    volumes:
+      - note_mongodb:/data/db
+    networks:
+      - note_bridge
+
+networks:
+  note_bridge:
+    driver: bridge
+
+volumes:
+  note_mongodb:
+    driver: local
