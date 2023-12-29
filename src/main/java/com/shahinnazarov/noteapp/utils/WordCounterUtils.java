@@ -3,8 +3,8 @@ package com.shahinnazarov.noteapp.utils;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class WordCounterUtils {
@@ -15,8 +15,10 @@ public class WordCounterUtils {
         for (int i = 0; i < content.length() - 1; i++) {
             if (head == -1 && Character.isLetter(content.charAt(i))) {
                 head = i;
-            } else if (!Character.isLetter(content.charAt(i + 1))) {
-                final String word = content.substring(0, i + 1);
+            }
+
+            if (!Character.isLetter(content.charAt(i + 1))) {
+                final String word = content.substring(head, i + 1);
                 result.merge(word, 1, Integer::sum);
                 head = ++i +1;
             }
@@ -25,6 +27,14 @@ public class WordCounterUtils {
         if (head < content.length()) {
             result.merge(content.substring(head), 1, Integer::sum);
         }
-        return result;
+
+        return result.entrySet().stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldVal, newVal) -> newVal,
+                        LinkedHashMap::new
+                ));
     }
 }

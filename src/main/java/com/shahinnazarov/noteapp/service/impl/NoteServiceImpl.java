@@ -9,6 +9,7 @@ import com.shahinnazarov.noteapp.service.NoteService;
 import com.shahinnazarov.noteapp.utils.IdGeneratorUtils;
 import com.shahinnazarov.noteapp.utils.TimeUtils;
 import com.shahinnazarov.noteapp.utils.WordCounterUtils;
+import com.shahinnazarov.noteapp.utils.converters.NoteToNoteQueryDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,10 @@ public class NoteServiceImpl implements NoteService {
     private final NoteRepo repo;
     private final TimeUtils timeUtils;
     private final IdGeneratorUtils idGeneratorUtils;
+    private final NoteToNoteQueryDtoConverter noteQueryDtoConverter;
 
     @Override
-    public void save(final NoteUpdateDto noteUpdateDto) {
+    public NoteQueryDto save(final NoteUpdateDto noteUpdateDto) {
         final Note note = Note.builder()
                 .id(idGeneratorUtils.generate())
                 .title(noteUpdateDto.getTitle())
@@ -34,20 +36,20 @@ public class NoteServiceImpl implements NoteService {
                 .wordStats(WordCounterUtils.calculate(noteUpdateDto.getContent()))
                 .tags(noteUpdateDto.getTags().stream().map(Tags::valueOf).collect(Collectors.toSet()))
                 .build();
-        repo.save(note);
+        return noteQueryDtoConverter.convert(repo.save(note));
     }
 
     @Override
-    public void update(NoteUpdateDto noteUpdateDto) {
+    public NoteQueryDto update(final String id, final NoteUpdateDto noteUpdateDto) {
         final Note note = Note.builder()
-                .id(noteUpdateDto.getId())
+                .id(id)
                 .title(noteUpdateDto.getTitle())
                 .content(noteUpdateDto.getContent())
                 .createdAt(timeUtils.now())
                 .wordStats(WordCounterUtils.calculate(noteUpdateDto.getContent()))
                 .tags(noteUpdateDto.getTags().stream().map(Tags::valueOf).collect(Collectors.toSet()))
                 .build();
-        repo.save(note);
+        return noteQueryDtoConverter.convert(repo.save(note));
     }
 
     @Override
