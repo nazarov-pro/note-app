@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class NoteTagValidator implements ConstraintValidator<NoteTagConstraint, Set<String>> {
+public class NoteTagAsStringValidator implements ConstraintValidator<NoteTagAsStringConstraint, String> {
     private final Set<String> allowedTags;
 
-    public NoteTagValidator() {
+    public NoteTagAsStringValidator() {
         this.allowedTags = Arrays.stream(Tags.values())
                 .filter(Tags::isAvailable)
                 .map(Tags::name)
@@ -19,7 +19,10 @@ public class NoteTagValidator implements ConstraintValidator<NoteTagConstraint, 
     }
 
     @Override
-    public boolean isValid(Set<String> value, ConstraintValidatorContext context) {
-        return allowedTags.containsAll(value);
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null || value.isBlank()) {
+            return true;
+        }
+        return allowedTags.containsAll(Arrays.asList(value.split(",")));
     }
 }

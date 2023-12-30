@@ -2,9 +2,13 @@ package com.shahinnazarov.noteapp.service;
 
 import com.shahinnazarov.noteapp.dto.NoteQueryDto;
 import com.shahinnazarov.noteapp.dto.NoteUpdateDto;
+import com.shahinnazarov.noteapp.entity.enums.Tags;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface NoteService {
 
@@ -14,7 +18,7 @@ public interface NoteService {
 
     void delete(String id);
 
-    Collection<NoteQueryDto> list(Pageable pageable);
+    Page<NoteQueryDto> list(boolean minimalResponse, String tags, PageRequest pageRequest);
 
     NoteQueryDto get(String id);
 }

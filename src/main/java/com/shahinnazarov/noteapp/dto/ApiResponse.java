@@ -2,6 +2,7 @@ package com.shahinnazarov.noteapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.util.Collection;
 
@@ -15,6 +16,9 @@ public class ApiResponse<T> {
     private T errors;
     private T item;
     private Collection<T> items;
+    private Long total;
+    private Integer pageSize;
+    private Integer pageNumber;
 
     public static <T> ApiResponse<T> success(final T item) {
         ApiResponse<T> response = new ApiResponse<>();
@@ -23,10 +27,13 @@ public class ApiResponse<T> {
         return response;
     }
 
-    public static <T> ApiResponse<T> success(final Collection<T> items) {
+    public static <T> ApiResponse<T> success(final Page<T> items) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setItems(items);
+        response.setItems(items.getContent());
         response.setMessage(DEFAULT_SUCCESS_MESSAGE);
+        response.setTotal(items.getTotalElements());
+        response.setPageNumber(items.getNumber());
+        response.setPageSize(items.getSize());
         return response;
     }
 

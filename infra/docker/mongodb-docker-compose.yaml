@@ -5,12 +5,13 @@ services:
     command: ["--auth"]
     container_name: note-mongodb
     restart: always
+    hostname: "${MONGO_DB_HOST}"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB_DATABASE}
     ports:
-      - '27017:27017'
+      - '${MONGO_DB_PORT}:27017'
     volumes:
       - note_mongodb:/data/db
     networks:
