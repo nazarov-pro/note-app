@@ -25,14 +25,14 @@ public class ExceptionTranslator {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.errors(errors));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(errors));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleNotFoundExceptions(
             final ResourceNotFoundException ex) {
-        final Map<String, String> errors = Map.of("resourceName", ex.getResourceName());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.errors(errors));
+        final Map<String, String> errors = Map.of(ResourceNotFoundException.FIELD_NAME, ex.getResourceName());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(errors));
     }
 
 }

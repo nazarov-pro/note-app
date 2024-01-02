@@ -1,6 +1,7 @@
 package com.shahinnazarov.noteapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
@@ -13,11 +14,14 @@ public class ApiResponse<T> {
     public static final String DEFAULT_ERROR_MESSAGE = "failed";
 
     private String message;
-    private T errors;
+    @JsonProperty("error_details")
+    private T errorDetails;
     private T item;
     private Collection<T> items;
     private Long total;
+    @JsonProperty("page_size")
     private Integer pageSize;
+    @JsonProperty("page_number")
     private Integer pageNumber;
 
     public static <T> ApiResponse<T> success(final T item) {
@@ -43,10 +47,10 @@ public class ApiResponse<T> {
         return response;
     }
 
-    public static <T> ApiResponse<T> errors(final T body) {
+    public static <T> ApiResponse<T> error(final T body) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setMessage(DEFAULT_ERROR_MESSAGE);
-        response.setErrors(body);
+        response.setErrorDetails(body);
         return response;
     }
 }

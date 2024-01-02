@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shahinnazarov.noteapp.entity.enums.Tags;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Jacksonized
 public class NoteQueryDto {
     private String id;
     private String title;
