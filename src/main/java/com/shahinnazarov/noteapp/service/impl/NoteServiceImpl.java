@@ -58,6 +58,9 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public NoteQueryDto update(final String id, final NoteUpdateDto noteUpdateDto) {
         log.info("Updating note[{}]: {}", id, noteUpdateDto);
+        if (!repo.existsById(id)) {
+            throw new ResourceNotFoundException("note_" + id);
+        }
 
         final Note note = Note.builder()
                 .id(id)

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.shahinnazarov'
-version = '0.0.1-SNAPSHOT'
+version = System.getenv().getOrDefault("NOTE_APP_VERSION", '0.0.1')
 
 java {
 	sourceCompatibility = '17'

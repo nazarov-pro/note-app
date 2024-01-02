@@ -1,1 +1,1 @@
-rootProject.name = 'note-app'
+rootProject.name = System.getenv().getOrDefault("NOTE_APP_NAME", 'note')

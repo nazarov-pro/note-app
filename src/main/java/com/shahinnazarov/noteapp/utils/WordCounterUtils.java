@@ -17,14 +17,14 @@ public class WordCounterUtils {
                 head = i;
             }
 
-            if (!Character.isLetter(content.charAt(i + 1))) {
+            if (!Character.isLetter(content.charAt(i + 1)) && head >= 0) {
                 final String word = content.substring(head, i + 1);
                 result.merge(word, 1, Integer::sum);
-                head = ++i +1;
+                head = -1;
             }
         }
 
-        if (head < content.length()) {
+        if (head >= 0) {
             result.merge(content.substring(head), 1, Integer::sum);
         }
 
