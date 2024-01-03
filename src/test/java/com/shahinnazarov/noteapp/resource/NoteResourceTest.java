@@ -142,7 +142,7 @@ public class NoteResourceTest {
 
         this.mockMvc.perform(put("/notes/id").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.item", content().json(JsonUtils.asString(queryDto))).exists());
     }
 
