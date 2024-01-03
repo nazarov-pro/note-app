@@ -1,10 +1,5 @@
 name: Note App
 
-env:
-  NOTE_GROUP: shahin-nazarov
-  NOTE_APP_NAME: note
-  NOTE_APP_VERSION: 0.0.1
-
 on:
   push:
     branches: [ "main" ]
@@ -16,7 +11,12 @@ permissions:
 
 jobs:
   build:
+    name: all-steps
     runs-on: ubuntu-latest
+    env:
+      NOTE_GROUP: shahin-nazarov
+      NOTE_APP_NAME: note
+      NOTE_APP_VERSION: 0.0.1
     services:
       registry:
         image: registry:2
@@ -46,6 +46,6 @@ jobs:
         push: true
         tags: localhost:5000/${{ env.NOTE_GROUP }}/${{ env.NOTE_APP_NAME }}:${{ env.NOTE_APP_VERSION }}
         build-args: |
-          NOTE_APP_NAME: ${{ env.NOTE_APP_NAME }}
-          NOTE_APP_VERSION: ${{ env.NOTE_APP_VERSION }}
+          NOTE_APP_NAME: $NOTE_APP_NAME
+          NOTE_APP_VERSION: $NOTE_APP_VERSION
 
