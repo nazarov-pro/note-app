@@ -46,6 +46,6 @@ jobs:
         push: true
         tags: localhost:5000/${{ env.NOTE_GROUP }}/${{ env.NOTE_APP_NAME }}:${{ env.NOTE_APP_VERSION }}
         build-args: |
-          NOTE_APP_NAME: $NOTE_APP_NAME
-          NOTE_APP_VERSION: $NOTE_APP_VERSION
+          NOTE_APP_NAME: $$NOTE_APP_NAME
+          NOTE_APP_VERSION: $$NOTE_APP_VERSION
 
